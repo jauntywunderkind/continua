@@ -1,0 +1,28 @@
+{
+	"name": "continua",
+	"version": "1.0.0",
+	"description": "",
+	"main": "index.js",
+	"scripts": {
+		"test": "echo \"Error: no test specified\" && exit 1"
+	},
+	"repository": {
+		"type": "git",
+		"url": "https://archive.eldergods.com/continua"
+	},
+	"keywords": [],
+	"author": "jauntywunderkind",
+	"license": "MIT",
+	"module": "continua.js",
+	"esm": true,
+	"@std/esm": {
+		"cjs": {
+			"namedExports": true
+		}
+	},
+	"dependencies": {
+		"event-iterator": "^1.0.0",
+		"fast-deep-equal": "^2.0.1",
+		"set-time-can": "^1.0.0"
+	}
+}
