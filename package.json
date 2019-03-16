@@ -1,7 +1,7 @@
 {
 	"name": "continua",
 	"version": "1.0.0",
-	"description": "",
+	"description": "Async Iterator that ongoingly re-runs an iterable-producing function, yielding unseen entries",
 	"main": "index.js",
 	"scripts": {
 		"test": "node -r esm .test"
