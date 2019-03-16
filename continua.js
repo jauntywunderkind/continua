@@ -3,36 +3,46 @@ import findSignal from "./find-signal.js"
 let defaults
 
 export async function *continua( factory, options){
-	const
+	// find defaults
+	let
 	  optsTick= options&& options.tick,
 	  optsComparator= options&& options.comparator
 	if( !optsTick|| !optsComparator){
 		if( !defaults){
-			const module= await import("./default.js")
-			defaults= await module.default()
+			const module = await import( "./defaults.js")
+			defaults= module.defaults
 		}
-		optsTick= optsTick|| defaults.tick
-		optsComparator= optsComparator|| defaults.comparator
+		const d= defaults()
+		optsTick= optsTick|| d.tick
+		optsComparator= optsComparator|| d.comparator
 	}
 
 	// produce current state
 	let state= await factory()
+	// yield it all
 	yield *state
 
-	// keep ticking through time
+	// start time ticking
 	const ticker= optsTick( options)
+	// for every tick
 	for await( const tick of ticker){
+		// re-fetch the state
 		const newState= await factory()
+		// in our new state,
 		NEW: for( const newer of newState){
+			// look for each element in our old state
 			for( const existing of state){
 				if( optsComparator( existing, newer)){
-					// we've seen this element
+					// continue on if we find the element in the old state
 					continue NEW
 				}
 			}
-			// element is not in current state, emit it
+			// and yield the element if it's not in old state
 			yield newer
 		}
+		// then capture our new state
 		state= newState
 	}
 }
+export const Continua = continua
+export default continua

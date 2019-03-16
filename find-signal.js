@@ -38,3 +38,4 @@ export async function * findSignal( target, options= defaults){
 	}
 	throw new NonAsyncTargetError( target)
 }
+export default findSignal
