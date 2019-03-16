@@ -12,7 +12,7 @@ export async function *continua( factory, options){
 			const module = await import( "./defaults.js")
 			defaults= module.defaults
 		}
-		const d= defaults()
+		const d= await defaults()
 		optsTick= optsTick|| d.tick
 		optsComparator= optsComparator|| d.comparator
 	}
