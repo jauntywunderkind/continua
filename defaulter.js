@@ -1,3 +1,4 @@
+"use module"
 export function DefaulterFactory( defaults= {}){
 	return function defaulter( name, options){
 		const primary= options&& options[ name]

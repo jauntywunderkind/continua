@@ -1,3 +1,4 @@
+"use module"
 import Defaulter from "./defaulter.js"
 
 export const defaults= {

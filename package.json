@@ -2,7 +2,7 @@
 	"name": "continua",
 	"version": "1.0.0",
 	"description": "Async Iterator that ongoingly re-runs an iterable-producing function, yielding unseen entries",
-	"main": "index.js",
+	"main": "continua.js",
 	"scripts": {
 		"test": "node -r esm .test"
 	},
@@ -13,6 +13,7 @@
 	"keywords": [],
 	"author": "jauntywunderkind",
 	"license": "MIT",
+	"type": "module",
 	"module": "continua.js",
 	"esm": true,
 	"@std/esm": {
@@ -27,7 +28,7 @@
 	},
 	"devDependencies": {
 		"deferrant": "^1.2.2",
-		"esm": "^3.2.18",
+		"esm": "^3.2.20",
 		"tape": "^4.10.1"
 	}
 }

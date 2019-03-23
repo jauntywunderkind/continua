@@ -1,3 +1,4 @@
+"use module"
 import findSignal from "./find-signal.js"
 
 let defaults
