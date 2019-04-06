@@ -19,16 +19,18 @@ export async function *continua( factory, options){
 	}
 
 	// produce current state
-	let state= await factory()
+	let state= Array.from(await factory())
 	// yield it all
 	yield *state
 
 	// start time ticking
-	const ticker= optsTick( options)
+	const
+	  tickOptions= options&& options.tickOptions!== undefined? options.tickOptions: options,
+	  ticker= optsTick( tickOptions)
 	// for every tick
 	for await( const tick of ticker){
 		// re-fetch the state
-		const newState= await factory()
+		const newState= Array.from(await factory())
 		// in our new state,
 		NEW: for( const newer of newState){
 			// look for each element in our old state

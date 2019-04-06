@@ -1,3 +1,4 @@
+"use module"
 export let
   tick,
   comparator
@@ -16,9 +17,9 @@ export function setComparator( newComparator){
 	return old
 }
 
-function defaultFromModule(module, prop= "default"){
+function defaultFromModule( module, prop= "default"){
 	return async function defaultProvider(){
-		const imported= await import(module)
+		const imported= await import( module)
 		return imported[ prop]
 	}
 }
@@ -37,10 +38,10 @@ export async function defaults(){
 		if( !comparator){
 			comparator= await defaultComparator()
 		}
-		_defaults= {
+		_defaults= Object.freeze({
 			tick,
 			comparator
-		}
+		})
 	}
 	return _defaults
 }

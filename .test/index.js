@@ -1,3 +1,4 @@
+"use module"
 import deferrant from "deferrant"
 import tape from "tape"
 
