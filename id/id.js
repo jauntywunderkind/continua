@@ -1,11 +1,8 @@
 "use module"
 import AsyncTee from "async-tee"
-import equal from "fast-deep-equal"
+import { ValueEqual} from "../equal.js"
 
 export class IdContinua extends AsyncTee{
-	static ReferenceDiff( a, b){
-		return a=== b
-	}
 	static makeGetId( property= "id"){
 		function getId(){
 			if( !item|| !item.id){
@@ -18,9 +15,6 @@ export class IdContinua extends AsyncTee{
 		getId.property= property
 		return getId
 	}
-
-	// done on constructor since this is a very new language feature
-	//static ValueDiff= equal
 
 	constructor( wrappedIterator, options){
 		super( wrappedIterator, options)
@@ -57,11 +51,8 @@ export class IdContinua extends AsyncTee{
 		this.ids= {}
 	}
 }
-IdContinua.ValueDiff= equal
-IdContinua.prototype.equal= equal
+IdContinua.prototype.equal= ValueEqual
 IdContinua.prototype.getId= IdContinua.makeGetId()
 export default IdContinua
 
-export const
-  ReferenceDiff= IdContinua.ReferenceDiff,
-  ValueDiff= IdContinua.Valuediff
+export const makeGetId= IdContinua.makeGetId
