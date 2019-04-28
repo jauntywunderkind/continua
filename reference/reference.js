@@ -7,7 +7,7 @@ export class ReferenceContinua extends AsyncTee{
 		this.weakSet.add( newItem)
 	}
 	filter( iter){
-		if( this.weakSet.has( iter)){
+		if( iter&& this.weakSet.has( iter.value)){
 			return
 		}
 		return iter

@@ -1,6 +1,4 @@
 "use module"
-import findSignal from "./find-signal.js"
-
 
 const
   $factory= Symbol.for( "continua:factory"),

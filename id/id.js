@@ -6,6 +6,19 @@ export class IdContinua extends AsyncTee{
 	static ReferenceDiff( a, b){
 		return a=== b
 	}
+	static makeGetId( property= "id"){
+		function getId(){
+			if( !item|| !item.id){
+				const err= new Error("item did not have id")
+				err.item= item
+				throw err
+			}
+			return item.id
+		}
+		getId.property= property
+		return getId
+	}
+
 	// done on constructor since this is a very new language feature
 	//static ValueDiff= equal
 
@@ -15,15 +28,12 @@ export class IdContinua extends AsyncTee{
 			if( options.equal!== undefined){
 				this.equal= options.equal
 			}
+			if( options.getId){
+				this.getId=  options.getId
+			}else if( options.idProperty){
+				this.getId= IdContinua.makeGetId( options.idProperty)
+			}
 		}
-	}
-	getId( item){
-		if( !item|| !item.id){
-			const err= new Error("item did not have id")
-			err.item= item
-			throw err
-		}
-		return item.id
 	}
 	filter( iter){
 		if( !iter){
@@ -49,6 +59,7 @@ export class IdContinua extends AsyncTee{
 }
 IdContinua.ValueDiff= equal
 IdContinua.prototype.equal= equal
+IdContinua.prototype.getId= IdContinua.makeGetId()
 export default IdContinua
 
 export const
