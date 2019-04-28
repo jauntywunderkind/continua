@@ -1,6 +1,6 @@
 "use module"
 import AsyncTee from "async-tee"
-import { ValueEqual} from "../equal.js"
+import { ValueEqual} from "./equal.js"
 
 export class IdContinua extends AsyncTee{
 	static makeGetId( property= "id"){
