@@ -1,17 +1,20 @@
 "use module"
 import asyncForEach from "async-iter-static/forEach.js"
+import Deferrant from "deferrant"
+
+import _tick from "./tick.js"
 
 /**
 * Periodically re-run an iterable producing function & emit all of it's values
 */
-export async function ContinuaProducer(
+export async function ContinuaProducer({
   producer, // required
   start= true,
   consumeSync= false,
   consumeAsync= false,
-  tick= import("./tick.js"),
+  tick= _tick,
   ...opts
-){
+}){
 	if( !producer){
 		console.log( "must have a function that produces data")
 	}
@@ -21,11 +24,9 @@ export async function ContinuaProducer(
 		if( tick.default){
 			tick= tick.default
 		}
-		if( tick instanceof Function){
-			tick= tick( opts)
-		}
-		// tick should now be an async iterable that is "ticking"
+		// tick should now be an async iterable
 	}
+	tick= tick( opts)
 
 	function signal(){
 		self.ticked= true

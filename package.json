@@ -22,6 +22,7 @@
 		}
 	},
 	"dependencies": {
+		"async-iter-static": "^1.0.1",
 		"async-tee": "^1.1.0",
 		"event-iterator": "^1.0.0",
 		"fast-deep-equal": "^2.0.1",

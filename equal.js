@@ -1,3 +1,4 @@
+"use module"
 import ValueEqual from "fast-deep-equal"
 
 export function ReferenceEqual( a, b){
@@ -7,7 +8,7 @@ export function ReferenceEqual( a, b){
 export {
   ValueEqual,
   ValueEqual as valueEqual,
-  ValueEqual as vlalue,
+  ValueEqual as value,
   ReferenceEqual as referenceEqual,
-  ReferenceEqual as ReferenceEqual
+  ReferenceEqual as reference
 }
