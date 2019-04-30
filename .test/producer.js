@@ -8,7 +8,8 @@ import { incrementer} from "./fixture.js"
 tape( "yields values", async function( t){
 	const
 	  inc= incrementer( 6),
-	  p= await Producer({ producer: inc})
+	  signal= {},
+	  p= await Producer({ producer: inc, signal})
 
 	// create a bunch of "nexts" which must resolve in order
 	const
@@ -41,6 +42,15 @@ tape( "yields values", async function( t){
 	  v3= await p3,
 	  v3v= v3.value
 	t.equal( v3v, 3, "got 3")
+
+	// terminate tick
+	signal.onabort()
+	try{
+		await p.tickStatus
+		t.fail( "tick was aborted but came out resolved")
+	}catch(ex){
+		t.pass( "tick was aborted and therefore rejected, as expected")
+	}
 
 	t.end()
 })

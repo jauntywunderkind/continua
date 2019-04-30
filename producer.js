@@ -28,7 +28,7 @@ export async function ContinuaProducer({
 	}
 	tick= tick( opts)
 
-	function signal(){
+	function signalTick(){
 		self.ticked= true
 		if( self.wait){
 			self.wait.resolve()
@@ -40,6 +40,7 @@ export async function ContinuaProducer({
 	  producer,
 	  tick,
 	  ticked: false,
+	  tickStatus: undefined, // promise to capture the conclusion of the tick
 	  inner: undefined,
 	  awaitTick: undefined, // waiting for a tick to proceed
 	  last: undefined, // most recent iteration stored here
@@ -96,9 +97,9 @@ export async function ContinuaProducer({
 	// begin
 	if( start){
 		// kick off immediately
-		signal()
+		signalTick()
 	}
-	asyncForEach( tick, signal);
+	self.tickStatus= asyncForEach( tick, signalTick)
 
 	return self
 }

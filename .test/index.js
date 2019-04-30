@@ -2,7 +2,7 @@
 import deferrant from "deferrant"
 import tape from "tape"
 
-import Continua from "../continua.js"
+import Continua from "../diff.js"
 
 function rollingDataFixture(){
 	let
