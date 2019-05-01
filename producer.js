@@ -13,6 +13,7 @@ export async function ContinuaProducer({
   consumeSync= false,
   consumeAsync= false,
   tick= _tick,
+  resetOnTick= false,
   ...opts
 }){
 	if( !producer){
@@ -56,6 +57,12 @@ export async function ContinuaProducer({
 			// only dispatch one at a time
 			await previous
 			// this might need/be helped by a setImmediate, to let drain?
+		}
+
+		// reset-on-tick preempts any current execution
+		if( resetOnTick&& self.ticked){
+			// forget any iteration that we are up to, start again
+			self.inner= null
 		}
 
 		// start a new iteration if we need to
