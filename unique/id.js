@@ -2,7 +2,14 @@
 import AsyncTee from "async-tee"
 import { ValueEqual} from "./equal.js"
 
-export class IdContinua extends AsyncTee{
+/**
+* Pass through a async or sync iteration, de-duplicating by finding an id for each item, and
+* passing through only new items or items that change (via deep-equal).
+*
+* This is an optimization of the "value" strategy, for cases where elements
+* can synthesize a unique-ifying id.
+*/
+export class IdUnique extends AsyncTee{
 	static makeGetId( property= "id"){
 		function getId(){
 			if( !item|| !item.id){
@@ -25,7 +32,7 @@ export class IdContinua extends AsyncTee{
 			if( options.getId){
 				this.getId=  options.getId
 			}else if( options.idProperty){
-				this.getId= IdContinua.makeGetId( options.idProperty)
+				this.getId= IdUnique.makeGetId( options.idProperty)
 			}
 		}
 	}
@@ -51,8 +58,8 @@ export class IdContinua extends AsyncTee{
 		this.ids= {}
 	}
 }
-IdContinua.prototype.equal= ValueEqual
-IdContinua.prototype.getId= IdContinua.makeGetId()
-export default IdContinua
+IdUnique.prototype.equal= ValueEqual
+IdUnique.prototype.getId= IdUnique.makeGetId()
+export default IdUnique
 
-export const makeGetId= IdContinua.makeGetId
+export const makeGetId= IdUnique.makeGetId

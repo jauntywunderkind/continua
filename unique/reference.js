@@ -1,7 +1,10 @@
 "use module"
 import AsyncTee from "async-tee"
 
-export class ReferenceContinua extends AsyncTee{
+/**
+* Pass through an async or sync iteration, deduplicating, by using a WeakSet to store items that we've seen.
+*/
+export class ReferenceUnique extends AsyncTee{
 	push( newItem){
 		super.push( newItem)
 		this.weakSet.add( newItem)
@@ -17,4 +20,4 @@ export class ReferenceContinua extends AsyncTee{
 		this.weakSet= new WeakSet()
 	}
 }
-export default ReferenceContinua
+export default ReferenceUnique

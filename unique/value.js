@@ -2,7 +2,10 @@
 import AsyncTee from "async-tee"
 import { ValueEqual} from "./equal.js"
 
-export class DiffContinua extends AsyncTee{
+/**
+* Pass-through an async or sync iteration, de-duplicating by comparing each new item with all previous items via a deep-equal.
+*/
+export class ValueUnique extends AsyncTee{
 	constructor( wrappedIterator, options){
 		super( wrappedIterator, options)
 		if( !options){
@@ -23,5 +26,5 @@ export class DiffContinua extends AsyncTee{
 		return iter
 	}
 }
-DiffContinua.prototype.equal= ValueEqual
-export default DiffContinua
+ValueUnique.prototype.equal= ValueEqual
+export default ValueUnique
