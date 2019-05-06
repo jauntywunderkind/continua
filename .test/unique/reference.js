@@ -12,18 +12,30 @@ tape( "reference deduplicate", async function( t){
 	  refUnique= new ReferenceUnique( f, { notify: true})
 
 	const
-	  preFork= readAhead( refUnique.tee(), 8),
+	  // start an iteration to read all data, ahead of our main read
+	  preForkAhead= readAhead( refUnique.tee(), 8),
+	  preForkAll= readAll( refUnique.tee()),
+	  // read all elements in the main
 	  read= readAll( refUnique),
-	  postFork= readAhead( refUnique.tee(), 8),
-	  doneRead= await read
+	  // start an iteration after the fact
+	  postForkAhead= readAhead( refUnique.tee(), 8),
+	  postForkAll= readAll( refUnique.tee())
 
 	const
-	  postReadFork= readAhead( refUnique.tee(), 8),
-	  donePreFork= await preFork,
-	  donePostFork= await postFork,
-	  donePostReadFork= await postReadFork
+	  // wait for main read to finish
+	  doneRead= await read,
+	  // start another read
+	  postReadForkAhead= readAhead( refUnique.tee(), 8),
+	  postReadForkAll= readAll( refUnique.tee()),
+	  // wait for iterations to finish
+	  donePreForkAhead= await preForkAhead,
+	  donePreForkAll= await preForkAll,
+	  donePostForkAhead= await postForkAhead,
+	  donePostForkAll= await postForkAll,
+	  donePostReadForkAhead= await postReadForkAhead,
+	  donePostReadForkAll= await postReadForkAll
 
-	console.log({ doneRead, donePreFork, donePostFork, donePostReadFork})
+	console.log({ doneRead, donePreForkAhead, donePreForkAll, donePostForkAhead, donePostForkAll, donePostReadForkAhead, donePostForkAll})
 	t.end()
 })
 	
