@@ -1,17 +1,8 @@
-> Continua
+# async-iter-unique
 
-> Async Iterator that ongoingly re-runs an iterable-producing function, yielding unseen entries
+> Pass-through async iterators while filtering out duplicate items
 
-# Example
-
-This project was built to serve an SSDP implementation, which needs to listen on all network interfaces.
-
-Node offers a `os.networkInterfaces()` call to read the list of interfaces. But which interfaces are available changes over time, and we needed a way to detect & bind to new interfaces as they become available.
-
-`continua` neatly knits together a way to consume both the initial interfaces and ongoing updates in a unified interface:
-
-```
-for await(const netIf of continua(os.networkInterfaces)){
-	// bind interface
-}
-```
+Has three different strategies for de-duplicationg:
+* **value.js:** do a deep-equals compare versus existing objects, dropping any seen objects. this requires walking seen objects looking for a match.
+* **reference.js:** use WeakSet to keep track of currently seen items. does no deep-equal checking: objects dropped only if we've seen that exact object. performance is per WeakSet.
+* **id.js:** sythesize an id for each item. if another item comes in with the same id, pass it through only if it is not deep-equal. this id lets us find a specific item to compare against quickly.

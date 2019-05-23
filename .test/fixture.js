@@ -23,12 +23,15 @@ export function incrementer( max= Number.POSITIVE_INFINITY){
 			--n
 			const next= incrementer.next++
 			if( next>= max){
+				console.log("enq-end")
 				incrementer.atEnd= true
 			}else{
+				console.log("enq-val", next)
 				incrementer.queue.push( next)
 			}
 		}
 		if( incrementer.waiting){
+			console.log("enq-wake")
 			incrementer.waiting.resolve()
 			incrementer.waiting= undefined
 		}
