@@ -57,19 +57,3 @@ export async function * fixture(){
 function getValue( i){
 	return i.value
 }
-
-export async function readAhead( iter, n){
-	const reads= []
-	while( n-- > 0){
-		reads.push( iter.next().then( getValue))
-	}
-	return Promise.all( reads)
-}
-
-export async function readAll( iter){
-	const reads= []
-	for await( const val of iter){
-		reads.push( val)
-	}
-	return reads
-}

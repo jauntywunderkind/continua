@@ -29,6 +29,8 @@
 		"set-time-can": "^1.0.0"
 	},
 	"devDependencies": {
+		"async-iter-range": "^1.0.0",
+		"async-iter-read": "^1.1.0",
 		"deferrant": "^1.2.2",
 		"esm": "^3.2.20",
 		"tape": "^4.10.1"
