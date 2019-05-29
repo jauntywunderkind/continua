@@ -1,10 +1,21 @@
 "use module"
 export const
   a= { a: 1},
+  a2= { a: 1},
   b= { b: 2},
-  c= { c: 3}
+  b2= { b: 2},
+  c= { c: 3},
+  c2= { c: 3}
 
-let step= -1
+export let step= -1
+
+// i thought step was supposed to be mutable but not working for my esm tests? adda  getter
+export function getStep(){
+	return step
+}
+
+
+
 /**
 * By value:
 *   a, b, c
@@ -18,9 +29,7 @@ export async function * fixture(){
 
 	// yield something that looks like a but is different
 	step= 1
-	yield {
-	  a: 1
-	}
+	yield a2
 
 	step= 2
 	yield b // first b
@@ -28,9 +37,7 @@ export async function * fixture(){
 	yield b
 
 	step= 3
-	yield {
-	  b: 2
-	}
+	yield b2
 
 	step= 4
 	yield c // yield c
@@ -40,9 +47,7 @@ export async function * fixture(){
 	yield a
 
 	step= 5
-	yield {
-	  c: 3
-	}
+	yield c2
 
 	// for good measure, another value copy of a
 	step= 6

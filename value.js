@@ -8,7 +8,7 @@ import { ValueEqual} from "./equal.js"
 export class ValueUnique extends AsyncTee{
 	constructor( wrappedIterator, options){
 		super( wrappedIterator, options)
-		if( !options){
+		if( options){
 			if( options.equal!== undefined){
 				this.equal= options.equal
 			}
