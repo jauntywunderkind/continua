@@ -1,11 +1,11 @@
 "use module"
-import AsyncTee from "async-tee"
+import AsyncIterPersist from "async-iter-persist"
 import { ValueEqual} from "./equal.js"
 
 /**
 * Pass-through an async or sync iteration, de-duplicating by comparing each new item with all previous items via a deep-equal.
 */
-export class ValueUnique extends AsyncTee{
+export class ValueUnique extends AsyncIterPersist{
 	constructor( wrappedIterator, options){
 		super( wrappedIterator, options)
 		if( options){

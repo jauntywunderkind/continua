@@ -1,38 +1,29 @@
 {
-	"name": "continua",
+	"name": "async-iter-uniq",
 	"version": "1.0.0",
-	"description": "Async Iterator that ongoingly re-runs an iterable-producing function, yielding unseen entries",
-	"main": "continua.js",
+	"description": "Uniquify an async-iterable.",
+	"main": "reference.js",
 	"scripts": {
 		"test": "node -r esm .test"
 	},
 	"repository": {
 		"type": "git",
-		"url": "https://archive.eldergods.com/continua"
+		"url": "https://archive.eldergods.com/async-iter-uniq"
 	},
 	"keywords": [],
 	"author": "jauntywunderkind",
 	"license": "MIT",
 	"type": "module",
-	"module": "continua.js",
+	"module": "reference.js",
 	"esm": true,
-	"@std/esm": {
-		"cjs": {
-			"namedExports": true
-		}
-	},
 	"dependencies": {
-		"async-iter-static": "^1.0.1",
-		"async-tee": "^1.1.0",
-		"event-iterator": "^1.0.0",
-		"fast-deep-equal": "^2.0.1",
-		"set-time-can": "^1.0.0"
+		"async-iter-persist": "^1.2.0",
+		"fast-deep-equal": "^2.0.1"
 	},
 	"devDependencies": {
 		"async-iter-range": "^1.0.0",
-		"async-iter-read": "^1.1.0",
-		"deferrant": "^1.2.2",
-		"esm": "^3.2.20",
+		"async-iter-read": "^2.0.1",
+		"esm": "^3.2.25",
 		"tape": "^4.10.1"
 	}
 }

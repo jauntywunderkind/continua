@@ -3,7 +3,7 @@ import tape from "tape"
 
 import ValueUnique from "../value.js"
 import { a, b, c, fixture} from "./fixture.js"
-import readAhead from "async-iter-read/ahead.js"
+import readAhead from "async-iter-read/fixed.js"
 
 // running ReferenceUnique on the fixture should produce a, b, c
 const expect= [ a, b, c]

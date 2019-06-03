@@ -1,5 +1,5 @@
 "use module"
-import AsyncTee from "async-tee"
+import AsyncIterPersist from "async-iter-persist"
 import { ValueEqual} from "./equal.js"
 
 /**
@@ -9,7 +9,7 @@ import { ValueEqual} from "./equal.js"
 * This is an optimization of the "value" strategy, for cases where elements
 * can synthesize a unique-ifying id.
 */
-export class IdUnique extends AsyncTee{
+export class IdUnique extends AsyncIterPersist{
 	static makeGetId( property= "id"){
 		function getId(){
 			if( !item|| !item.id){

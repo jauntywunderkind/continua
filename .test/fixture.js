@@ -14,8 +14,6 @@ export function getStep(){
 	return step
 }
 
-
-
 /**
 * By value:
 *   a, b, c

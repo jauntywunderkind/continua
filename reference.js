@@ -1,10 +1,10 @@
 "use module"
-import AsyncTee from "async-tee"
+import AsyncIterPersist from "async-iter-persist"
 
 /**
 * Pass through an async or sync iteration, deduplicating, by using a WeakSet to store items that we've seen.
 */
-export class ReferenceUnique extends AsyncTee{
+export class ReferenceUnique extends AsyncIterPersist{
 	push( newItem){
 		super.push( newItem)
 		this.weakSet.add( newItem)
