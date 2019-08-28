@@ -2,7 +2,8 @@
 import deferrant from "deferrant"
 import tape from "tape"
 
-import Continua from "../diff.js"
+import Continua from ".."
+import AsyncIterPipe from "async-iter-pipe"
 
 function rollingDataFixture(){
 	let
@@ -23,32 +24,12 @@ function rollingDataFixture(){
 	}
 }
 
-function tickFixture(){
-	let d= deferrant()
-	function tick(){
-		d= deferrant()
-		process.nextTick(function(){
-			d.resolve()
-		})
-	}
-	async function *iterator(){
-		while( true){
-			await d
-			yield
-		}
-	}
-	return {
-		tick,
-		iterator
-	}
-}
-
 tape( "produces a basic sequence", async function( t){
 	t.plan( 4)
 	const
 	  roll= rollingDataFixture(),
-	  ticker= tickFixture(),
-	  continua= Continua( roll, { tick: ticker.iterator })
+	  ticker= new AsyncIterPipe(),
+	  continua= new Continua( roll, { tick: ticker})
 	// rolling data fixture starts with two elements immediately available
 	const r1= await continua.next()
 	t.deepEqual( r1.value, { a: 1})
@@ -58,10 +39,10 @@ tape( "produces a basic sequence", async function( t){
 	// todo: validate that no elements are now available
 
 	// emit a tick, which ought cause the data fixture to run
-	ticker.tick()
+	ticker.produce()
 	const r3= await continua.next()
 	t.deepEqual( r3.value, { c: 3})
-	ticker.tick()
+	ticker.produce()
 	const r4= await continua.next()
 	t.deepEqual( r4.value, { d: 4})
 	t.end()

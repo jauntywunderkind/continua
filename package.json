@@ -21,6 +21,7 @@
 		"fast-deep-equal": "^2.0.1"
 	},
 	"devDependencies": {
+		"async-iter-pipe": "^1.0.0",
 		"async-iter-range": "^1.0.0",
 		"async-iter-read": "^2.0.1",
 		"esm": "^3.2.25",

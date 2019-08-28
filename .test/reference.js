@@ -1,7 +1,7 @@
 "use module"
 import tape from "tape"
 
-import ReferenceUnique from "../../unique/reference.js"
+import ReferenceUnique from "../../reference.js"
 
 import { fixture, a, b, c, readAhead, readAll} from "./fixture.js"
 
