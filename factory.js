@@ -3,6 +3,7 @@ import AsyncIterPipe from "async-iter-pipe/async-iter-pipe.js"
 
 export class FactoryContinua extends AsyncIterPipe{
 	listeners= []
+	rerun= false
 	constructor( fn, tick, opts= {}){
 		super( opts)
 		this.fn= fn
@@ -28,8 +29,18 @@ export class FactoryContinua extends AsyncIterPipe{
 			if( cursor.done){
 				break
 			}
-			// no interlock atm!
-			state.run= this._run( cursor.value)
+			// run if not running
+			if( !state.run){
+				do{
+					if( state.rerun=== true|| state.rerun=== false){
+						state.rerun= false
+					}
+					state.run= this._run( cursor.value)
+				}while( state.rerun)
+			}else if(state.rerun=== false){
+				// re-run once run
+				state.rerun= true
+			}
 		}
 		return cursor.value
 	}

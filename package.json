@@ -24,6 +24,7 @@
 		"async-iter-pipe": "^1.0.0",
 		"async-iter-range": "^1.0.0",
 		"async-iter-read": "^2.0.1",
+		"async-iter-uniq": "^1.0.0",
 		"esm": "^3.2.25",
 		"tape": "^4.10.1"
 	}
