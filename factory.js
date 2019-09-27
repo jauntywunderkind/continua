@@ -1,12 +1,24 @@
 "use module"
 import AsyncIterPipe from "async-iter-pipe/async-iter-pipe.js"
 
-function listenersIndex(){
-	return this.listeners.indexOf( this)
-}
+export function TickListener( ticker, factory, opts){
+	// save state
+	this.ticker= ticker
+	this.factory= factory
+	this.tickIterator: ticker[ Symbol.asyncIteration]()
+	this.looper: null,
+	this.producer: null,
+	this.reproduce: opts&& opts.reproduce!== undefined? opts.reproduce|| false, // null will disable reproduce
 
-function remove(){
-	this.listeners.remove( this)
+	// start loop
+	this.tickLooper= factory._tickLooper( this)
+	return this
+}
+TickListener.prototype.listenersIndex= function(){
+	return this.factory.listeners.indexOf( this)
+}
+TickListener.prototype.remove= function(){
+	this.factory.listeners.remove( this)
 }
 
 export class FactoryContinua extends AsyncIterPipe{
@@ -21,25 +33,8 @@ export class FactoryContinua extends AsyncIterPipe{
 	}
 
 	async listenToTick( ticker, opts){
-
-		// make listener
-		const listener= {
-			// listener
-			factory: this,
-			ticker,
-			iterator: ticker[ Symbol.asyncIteration]? ticker[ Symbol.asyncIteration](): ticker[ Symbol.iteration]()
-			looper: null,
-			producer: null,
-			reproduce: opts&& opts.reproduce!== undefined? opts.reproduce|| false, // null will disable reproduce
-			listenersIndex,
-			remove
-		}
-		// remember listener
+		const listener= new TickListener( this, ticker, opts)
 		this.listeners.push( listener)
-
-		// start run
-		listener.looper= this._looper( listener)
-		// return listener
 		return listener
 	}
 
@@ -47,11 +42,11 @@ export class FactoryContinua extends AsyncIterPipe{
 	* Keep waiting for ticks and running produces
 	* @param listener - the listenToTick context for this loop
 	*/
-	async _looper( listener){
+	async _tickLooper( listener){
 		let tick
 		while( true){
 			// wait for tick signal
-			tick= await listener.ticker.next()
+			tick= await listener.tickIterator.next()
 			if( tick.done){
 				break
 			}
@@ -62,7 +57,7 @@ export class FactoryContinua extends AsyncIterPipe{
 					if( listener.reproduce=== true|| listener.reproduce=== false){
 						listener.reproduce= false
 					}
-					listener.producer= this._producer.call( listener.factory, listener)
+					listener.producer= this._producer( listener)
 				}while( listener.reproduce)
 			// or remember that we were signalled, & reproduce once current produce finished
 			}else if( listener.reproduce=== false){
