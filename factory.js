@@ -1,11 +1,11 @@
 "use module"
 import AsyncIterPipe from "async-iter-pipe/async-iter-pipe.js"
 
-export function TickListener( ticker, factory, opts){
+export function TickListener( factory, ticker, opts){
 	// save state
 	this.ticker= ticker
 	this.factory= factory
-	this.tickIterator: ticker[ Symbol.asyncIteration]()
+	this.tickIterator= ticker[ Symbol.asyncIterator]()
 	// start loop
 	this.tickLooper= factory._tickLooper( this)
 	return this
@@ -61,8 +61,8 @@ export class FactoryContinua extends AsyncIterPipe{
 			// kick off an produce
 			if( !this.run){
 				do{
-					if( this.rerun=== true|| listener.rerun=== false){
-						listener.rerun= false
+					if( this.rerun=== true|| this.rerun=== false){
+						this.rerun= false
 					}
 					this.run= this._run( listener)
 				}while( this.rerun)
@@ -77,10 +77,18 @@ export class FactoryContinua extends AsyncIterPipe{
 	* Re-run producer function, and put into pipe everything it yields
 	*/
 	async _run( listener){
+		// iterate through items
 		for await( const item of this.producer()){
+			// run parent's AsyncIterPipe#produce to take item
 			this.produce( item)
 		}
 		// clean self up on listener
-		listener.producer= null
+		this.run= null
 	}
+}
+export {
+	FactoryContinua as default,
+	FactoryContinua as factoryContinua,
+	FactoryContinua as Factory,
+	FactoryContinua as factory
 }

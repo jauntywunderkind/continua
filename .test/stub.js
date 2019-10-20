@@ -1,7 +1,9 @@
 "use module"
-export function producer( n= generator.n){
-	const arr= new Array( generator.n)
-	arr.fill( generator.n)
+import AsyncIterInterval from "async-iter-interval"
+
+export function producer( n= producer.n){
+	const arr= new Array( producer.n)
+	arr.fill( producer.n)
 	return arr
 }
 producer.n= 1
