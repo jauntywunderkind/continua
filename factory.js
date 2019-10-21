@@ -1,34 +1,37 @@
 "use module"
 import AsyncIterPipe from "async-iter-pipe/async-iter-pipe.js"
 
-export function TickListener( factory, ticker, opts){
+export function Ticker( factory, ticker, opts){
 	// save state
 	this.ticker= ticker
 	this.factory= factory
-	this.tickIterator= ticker[ Symbol.asyncIterator]()
-	// start loop
-	this.tickLooper= factory._tickLooper( this)
+
+	// start work: create the ticker by asking for it's iterator
+	this.iterator= ticker[ Symbol.asyncIterator]()
+	// start looping the ticker
+	this.loop= factory._tickLooper( this)
+
 	return this
 }
-TickListener.prototype.listenersIndex= function(){
-	return this.factory.listeners.indexOf( this)
+Ticker.prototype.tickersIndex= function(){
+	return this.factory.tickers.indexOf( this)
 }
-TickListener.prototype.remove= function(){
+Ticker.prototype.remove= function(){
 	// clean up tick iterator
 	let done
-	if( this.tickIterator&& this.tickIterator.return){
-		done= this.tickIterator.return()
+	if( this.iterator&& this.iterator.return){
+		done= this.iterator.return()
 	}
 
 	// clean self up out of factory
-	this.factory.listeners.remove( this)
+	this.factory.tickers.remove( this)
 
 	// return whence all cleaned up
 	return done|| Promise.resolve()
 }
 
 export class FactoryContinua extends AsyncIterPipe{
-	listeners= []
+	tickers= []
 	run= null
 	rerun= false
 	constructor( producer, tick, opts= {}){
@@ -40,31 +43,34 @@ export class FactoryContinua extends AsyncIterPipe{
 	}
 
 	async listenToTick( ticker, opts){
-		const listener= new TickListener( this, ticker, opts)
-		this.listeners.push( listener)
-		return listener
+		const wrapped= new Ticker( this, ticker, opts)
+		this.tickers.push( wrapped)
+		return wrapped
 	}
 
 	/**
 	* Keep waiting for ticks and running produces
-	* @param listener - the listenToTick context for this loop
+	* @param ticker - the listenToTick context for this loop
 	*/
-	async _tickLooper( listener){
+	async _tickLooper( ticker){
 		let tick
 		while( true){
+			console.log( "factory-tick")
 			// wait for tick signal
-			tick= await listener.tickIterator.next()
+			tick= await ticker.iterator.next()
 			if( tick.done){
+				console.log("factory-tick-done")
 				break
 			}
 
+			console.log("factory-tick-producing")
 			// kick off an produce
 			if( !this.run){
 				do{
 					if( this.rerun=== true|| this.rerun=== false){
 						this.rerun= false
 					}
-					this.run= this._run( listener)
+					this.run= this._run( ticker)
 				}while( this.rerun)
 			// or remember that we were signalled, & rerun once current produce finished
 			}else if( this.rerun=== false){
@@ -76,13 +82,15 @@ export class FactoryContinua extends AsyncIterPipe{
 	/**
 	* Re-run producer function, and put into pipe everything it yields
 	*/
-	async _run( listener){
+	async _run( ticker){
+		console.log( "factory-_run")
 		// iterate through items
 		for await( const item of this.producer()){
+			console.log( "factory-_run-item")
 			// run parent's AsyncIterPipe#produce to take item
 			this.produce( item)
 		}
-		// clean self up on listener
+		// clean self up on ticker
 		this.run= null
 	}
 }

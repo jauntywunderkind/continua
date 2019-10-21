@@ -1,18 +1,17 @@
 "use module"
 import AsyncIterExpect from "async-iter-expect"
-import delay from "delay"
+import Delay from "delay"
 import tape from "tape"
 
 import Factory from "continua/factory" // i haven't used package local scope before, only relative scope ..
-import { Producer, Tick} from "./stub.js" // but also relative
+import { Producer, Tick, DELAY} from "./stub.js" // but also relative
 
 
 tape( "build a factory which produces things", async function( t){
 	t.plan( 1)
 	const
 	  producer= Producer(),
-	  d= 3,
-	  tick= Tick( d),
+	  tick= Tick(),
 	  opts= {},
 	  factory= new Factory( producer, tick, opts),
 	  expect= new AsyncIterExpect( factory, [[ 1], [ 2, 2], [ 3, 3]])
@@ -22,7 +21,7 @@ tape( "build a factory which produces things", async function( t){
 	}, function(){
 		t.fail()
 	})
-	await delay( (d* 3)+ 50)
+	await Delay( (DELAY* 3)+ 10)
 })
 
 
