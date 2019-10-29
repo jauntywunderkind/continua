@@ -6,9 +6,9 @@ export function producer( n= producer.n, tap){
 		if( tap){
 			tap()
 		}
-		console.log("produce")
 		const arr= new Array( producer.n)
 		arr.fill( producer.n)
+		producer.n++
 		return arr
 	}
 	producer.n= n
@@ -16,7 +16,7 @@ export function producer( n= producer.n, tap){
 }
 producer.n= 1
 
-export const DELAY= 4
+export const DELAY= 5
 
 export const tick= (n= DELAY)=> new AsyncIterInterval( n)
 

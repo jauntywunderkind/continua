@@ -55,15 +55,12 @@ export class FactoryContinua extends AsyncIterPipe{
 	async _tickLooper( ticker){
 		let tick
 		while( true){
-			console.log( "factory-tick")
 			// wait for tick signal
 			tick= await ticker.iterator.next()
 			if( tick.done){
-				console.log("factory-tick-done")
 				break
 			}
 
-			console.log("factory-tick-producing")
 			// kick off an produce
 			if( !this.run){
 				do{
@@ -83,10 +80,8 @@ export class FactoryContinua extends AsyncIterPipe{
 	* Re-run producer function, and put into pipe everything it yields
 	*/
 	async _run( ticker){
-		console.log( "factory-_run")
 		// iterate through items
 		for await( const item of this.producer()){
-			console.log( "factory-_run-item")
 			// run parent's AsyncIterPipe#produce to take item
 			this.produce( item)
 		}

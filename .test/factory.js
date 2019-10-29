@@ -21,15 +21,6 @@ tape( "build a factory which produces things", async function( t){
 	}, function(){
 		t.fail()
 	})
-	await Delay(( DELAY* 3) + 5 )
-	tick.clearInterval()
+	await Delay(( DELAY* 3) + 3)
+	tick.end()
 })
-
-
-
-
-
-
-
-
-
